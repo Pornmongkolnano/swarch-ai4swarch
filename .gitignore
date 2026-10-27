@@ -1,1 +1,5 @@
 .DS_Store
+
+# Generated Gradle cache and build outputs
+/system/online-boutique/src/adservice/.gradle/
+/system/online-boutique/src/adservice/build/

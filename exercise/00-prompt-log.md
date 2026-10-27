@@ -2,19 +2,18 @@
 
 # บันทึกการใช้ prompt
 
-**ชื่อ / รหัสนิสิต:**
-**agent ที่ใช้:** เช่น GitHub Copilot (Agent mode), Gemini Code Assist, Gemini CLI, Claude Code, Codex, Cursor, Cline: …
-**โมเดล:** …
-**แพ็กเกจที่ใช้:** เช่น Copilot Student, Copilot Free, Gemini รุ่นฟรี: …
+**ชื่อ / รหัสนิสิต:** พรมงคล ตันนิกร / 6631337421
+**agent ที่ใช้:** Codex (แยก sub-agent สำหรับแต่ละ run)
+**โมเดล:** GPT-6.1 Sol
+**แพ็กเกจที่ใช้:** gpt pro
 
 บันทึกทุกคำขอที่ส่งให้ agent ช่อง "ไฟล์ที่ agent อ่าน" คือไฟล์ที่ agent รายงาน หรือที่นิสิตเห็นว่า agent เปิด
 
 | # | งาน / run | agent + โมเดล | ข้อความที่ส่ง (ย่อ) | ไฟล์ที่ agent อ่าน | อยู่ในขอบเขตหลักฐานที่อนุญาตหรือไม่ | มีประโยชน์ (1–5) | หมายเหตุ |
 |---|---|---|---|---|---|---|---|
-| 1 | 1-A | | `prompts/1-…` run A | | | | |
-| 2 | 1-B | | `prompts/1-…` run B | | | | |
-| 3 | 2-a | | `prompts/2-…` run a | | | | |
-| 4 | 2-b | | `prompts/2-…` run b | | | | |
-| 5 | 3 | | `prompts/3-…` | | | | |
-| 6 | | | | | | | |
-| 7 | | | | | | | |
+| 1 | 1-A | Codex / GPT-6.1 Sol | Read AGENTS.md first; Follow prompts/1-recover-architecture.md; run: A; evidence: system/online-boutique/protos/demo.proto | `AGENTS.md`; `prompts/1-recover-architecture.md`; `system/online-boutique/protos/demo.proto` | ตามรายงาน agent: อยู่ในขอบเขต | 4 | ผลลัพธ์มี 9 service interfaces และยังไม่มี runtime dependency ที่ยืนยันได้จากหลักฐาน |
+| 2 | 1-B | Codex / GPT-6.1 Sol | Read AGENTS.md first; Follow prompts/1-recover-architecture.md; run: B; evidence: system/online-boutique/protos/demo.proto, system/online-boutique/kubernetes-manifests/ | `AGENTS.md`; `prompts/1-recover-architecture.md`; `system/online-boutique/protos/demo.proto`; `system/online-boutique/kubernetes-manifests/README.md`; `system/online-boutique/kubernetes-manifests/adservice.yaml`; `system/online-boutique/kubernetes-manifests/cartservice.yaml`; `system/online-boutique/kubernetes-manifests/checkoutservice.yaml`; `system/online-boutique/kubernetes-manifests/currencyservice.yaml`; `system/online-boutique/kubernetes-manifests/emailservice.yaml`; `system/online-boutique/kubernetes-manifests/frontend.yaml`; `system/online-boutique/kubernetes-manifests/kustomization.yaml`; `system/online-boutique/kubernetes-manifests/loadgenerator.yaml`; `system/online-boutique/kubernetes-manifests/paymentservice.yaml`; `system/online-boutique/kubernetes-manifests/productcatalogservice.yaml`; `system/online-boutique/kubernetes-manifests/recommendationservice.yaml`; `system/online-boutique/kubernetes-manifests/shippingservice.yaml` | ตามรายงาน agent: อยู่ในขอบเขต | 5 | ผลลัพธ์มี 12 containers และ 17 relationships; แยก configuration ออกจาก runtime observation |
+| 3 | 2-a | Codex / GPT-6.1 Sol | Follow prompts/2-write-adr.md; run: a; context: none; requirement: R-12; language: Thai | `AGENTS.md`; `prompts/2-write-adr.md`; `docs/adr/template.md` | ตามรายงาน agent: อยู่ในขอบเขต | 4 | ADR-0002 Proposed; เปรียบเทียบ 3 ทางเลือกและมี Open questions |
+| 4 | 2-b | Codex / GPT-6.1 Sol | Follow prompts/2-write-adr.md; run: b; context: scenario, ADR-0001, checkoutservice/main.go; requirement: R-12; language: Thai | `AGENTS.md`; `prompts/2-write-adr.md`; `docs/adr/template.md`; `docs/scenario.md`; `docs/adr/0001-use-redis-for-cart-storage.md`; `system/online-boutique/src/checkoutservice/main.go` | ตามรายงาน agent: อยู่ในขอบเขต | 5 | เลือก durable outbox + RabbitMQ; แยกข้อเสนอใหม่จาก implementation ที่มีหลักฐาน |
+| 5 | 3 | Codex / GPT-6.1 Sol | Follow prompts/3-review-adr.md; adr: docs/adr/0002-use-rabbitmq-and-transactional-outbox.md; language: Thai | `AGENTS.md`; `prompts/3-review-adr.md`; `docs/adr/0002-use-rabbitmq-and-transactional-outbox.md`; `docs/scenario.md` | ตามรายงาน agent: อยู่ในขอบเขต | 5 | accept with changes; 3 scenarios, findings ครบ 4 ประเภท และข้อแก้ไขสำคัญ 3 ข้อ; ไม่แก้ ADR |
+| 6 | เตรียมงานและบันทึกข้อมูล | Codex / GPT-6.1 Sol | ตรวจ workspace และกรอกข้อมูลข้อเท็จจริงตามคำขอนิสิต | `AGENTS.md`; `prompts/1-recover-architecture.md`; `exercise/00-prompt-log.md`; `exercise/outputs/1A-architecture.md`; `exercise/outputs/1B-architecture.md`; `exercise/01-recover-architecture.md`; `.vscode/extensions.json`; Git metadata; บันทึกข้อมูลตัวตนและข้อมูลบัญชี | งานเตรียม/ธุรการ แยกจาก Run 1-A/1-B | | โมเดลระบุตามข้อมูลจากนิสิต; ไม่กรอกคะแนนหรือความเห็นส่วนบุคคลแทน |
